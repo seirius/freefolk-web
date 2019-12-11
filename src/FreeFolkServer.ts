@@ -17,8 +17,8 @@ export class FreeFolkServer extends Server {
             apis: ['**/*.controller.*'],
             swaggerDefinition: {
                 info: {
-                    description: 'Theater API',
-                    title: 'Movie theater',
+                    description: 'Web API',
+                    title: 'Front web',
                     version: '1.0.0',
                 },
             },
@@ -36,7 +36,7 @@ export class FreeFolkServer extends Server {
         this.app.listen(
             ServerConfig.PORT, 
             () => {
-                Logger.Info(`Server listenning at http://localhost:${ServerConfig.PORT}`, true);
+                Logger.Info(`Web listenning at http://localhost:${ServerConfig.PORT}`, true);
                 Logger.Info(`Swagger at http://localhost:${ServerConfig.PORT}/swagger`, true);
             }
         );
