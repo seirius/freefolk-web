@@ -11,22 +11,8 @@ export class ListenerService {
     constructor(
         private readonly mqttService: MqttService,
     ) {
-        listen(SocketConfig.PORT)
-        .on("connect", () => {
-            this.mqttService.sub({
-                channel: "convert",
-                callback: (payload: Record<string, any>) => {
-                    this.sockets.forEach(socket => socket.emit("convert", JSON.stringify(payload)));
-                }
-            });
-            this.mqttService.sub({
-                channel: "download",
-                callback: (payload: Record<string, any>) => {
-                    this.sockets.forEach(socket => socket.emit("download", JSON.stringify(payload)));
-                },
-            });
-        }).on("connection", (socket: Socket) => {
-            console.log(this.sockets.length);
+        listen(SocketConfig.PORT, { path: SocketConfig.PATH })
+        .on("connection", (socket: Socket) => {
             this.sockets.push(socket);
             socket.on("disconnect", () => {
                 const index = this.sockets.findIndex(s => s.id === socket.id);
@@ -34,9 +20,19 @@ export class ListenerService {
                     this.sockets.splice(index, 1);
                 }
             });
-        })
-        .on("disconnect", (socket: Socket) => {
-            console.log(socket);
+        });
+
+        this.mqttService.sub({
+            channel: "progress",
+            callback: (payload: Record<string, any>) => {
+                this.sockets.forEach(socket => socket.emit("progress", JSON.stringify(payload)));
+            }
+        });
+        this.mqttService.sub({
+            channel: "file_state",
+            callback: (payload: Record<string, any>) => {
+                this.sockets.forEach(socket => socket.emit("file_state", JSON.stringify(payload)));
+            }
         });
 
     }
