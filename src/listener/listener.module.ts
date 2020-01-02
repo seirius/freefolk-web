@@ -1,9 +1,9 @@
 import { Module } from "@nestjs/common";
-import { MqttModule } from "nest-mqtt-client";
+import { MqttModule, ProcessStateModule } from "nest-mqtt-client";
 import { ListenerService } from "./listener.service";
 
 @Module({
-    imports: [MqttModule],
+    imports: [MqttModule, ProcessStateModule],
     providers: [ListenerService],
     exports: [ListenerService],
 })
