@@ -1,21 +1,25 @@
-import { Controller, Get, Logger } from "@nestjs/common";
-import { ProcessStateService } from "nest-mqtt-client";
+import { Controller, Get, Logger, HttpStatus } from "@nestjs/common";
+import { ApiResponse } from "@nestjs/swagger";
+import { SystemReportDto, SystemReportResponseDto } from "./system-state.dto";
+import { SystemStateService } from "./system-state.service";
 
 @Controller()
 export class SystemStateController {
 
-    private readonly logger = new Logger(SystemStateController.constructor.name);
-
     constructor(
-        private readonly processStateService: ProcessStateService,
+        private readonly systemStateService: SystemStateService,
     ) {}
 
-    @Get("/system")
-    test(): string {
-        this.processStateService.askForReport({
-            onReport: (reports) => this.logger.log(reports),
-        });
-        return "heh";
+    @Get("/system-report")
+    @ApiResponse({
+        status: HttpStatus.OK,
+        description: "System report",
+        type: SystemReportResponseDto,
+    })
+    async systemReport(): Promise<SystemReportResponseDto> {
+        return {
+            reports: await this.systemStateService.systemReport(),
+        };
     }
 
 }
