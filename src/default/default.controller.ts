@@ -7,7 +7,7 @@ export class DefaultController {
     @Get("ping")
     @ApiResponse({
         status: HttpStatus.OK,
-        description: "Healthcheck endpoint"
+        description: "Healthcheck endpoint",
     })
     ping(): string {
         return "pong";
