@@ -4,11 +4,13 @@ import { ServerConfig } from "./config/ServerConfig";
 import { Logger } from "@nestjs/common";
 import { DocumentBuilder, SwaggerModule } from "@nestjs/swagger";
 import { LoggerConfig } from "./config/LoggerConfig";
+import { configureSession } from "./redis/redis";
 
 async function bootstrap() {
     const app = await NestFactory.create(AppModule, {
         logger: LoggerConfig.LEVEL as any,
     });
+    app.use(configureSession());
 
     const options = new DocumentBuilder()
     .setTitle("Freefolk web")
@@ -19,7 +21,6 @@ async function bootstrap() {
 
     const document = SwaggerModule.createDocument(app, options);
     SwaggerModule.setup("api", app, document);
-
     await app.listen(ServerConfig.PORT);
     new Logger().log(`Server running on http://localhost:${ServerConfig.PORT}`);
 }

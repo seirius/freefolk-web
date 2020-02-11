@@ -1,5 +1,6 @@
-import { Controller, Get, HttpStatus } from "@nestjs/common";
+import { Controller, Get, HttpStatus, Req } from "@nestjs/common";
 import { ApiResponse } from "@nestjs/swagger";
+import { Request } from "express";
 
 @Controller()
 export class DefaultController {
@@ -9,7 +10,8 @@ export class DefaultController {
         status: HttpStatus.OK,
         description: "Healthcheck endpoint",
     })
-    ping(): string {
+    ping(@Req() request: Request): string {
+        console.log(request.session);
         return "pong";
     }
 

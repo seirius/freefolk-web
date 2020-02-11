@@ -4,7 +4,11 @@ import { ListenerModule } from "./listener/listener.module";
 import { SystemStateModule } from "./system-state/system-state.module";
 
 @Module({
-    imports: [DefaultModule, ListenerModule, SystemStateModule],
+    imports: [
+        DefaultModule,
+        ListenerModule,
+        SystemStateModule,
+    ],
     controllers: [],
     providers: [],
 })
